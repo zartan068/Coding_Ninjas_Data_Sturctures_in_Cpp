@@ -1,45 +1,30 @@
-Check Case
-Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
+Find the Unique Element
+Given an integer array of size 2N + 1. In this given array, N numbers are present twice and one number is present only once in the array.
+You need to find and return that number which is unique in the array.
+Note : Given array will always contain odd number of elements.
 Input format :
-Single Character
-Output format :
-1 or 0 or -1
+Line 1 : Array size i.e. 2N+1
+Line 2 : Array elements (separated by space)
+Output Format :
+Unique element present in the array
 Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
+1 <= N <= 10^6
+Sample Input :
+7
+2 3 1 6 3 6 2
+Sample Output :
 1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
+	
+	
+/**************************************************** SOLUTION **************************************************************************/
+	
+	
+#include <bits/stdc++.h> 
+int FindUnique(int ar[], int ar_size){
 
-
-/****************************************** SOLUTION *************************************************************************************/
-
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
-    
-    if(a >='a' && a <='z'){
-        cout<<"0";
-    }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
-    }
-    else{
-        cout<<"-1";
-    }
+    int res = ar[0]; 
+        for (int i = 1; i < ar_size; i++) 
+            res = res ^ ar[i]; 
+  
+        return res; 
 }
