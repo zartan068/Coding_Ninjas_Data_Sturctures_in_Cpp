@@ -1,45 +1,44 @@
-Check Case
-Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
-Input format :
-Single Character
-Output format :
-1 or 0 or -1
-Constraints :
-Input can be any character
+Does s contain t ?
+Given two string s and t, write a function to check if s contains all characters of t (in the same order as they are in string t).
+Return true or false.
+Do it recursively.
+E.g. : s = “abchjsgsuohhdhyrikkknddg” contains all characters of t=”coding” in the same order. So function will return true.
+Input Format :
+Line 1 : String s
+Line 2 : String t
+Output Format :
+true or false
 Sample Input 1 :
-v
+abchjsgsuohhdhyrikkknddg
+coding
 Sample Output 1 :
-0
+true
 Sample Input 2 :
-V
+abcde
+aeb
 Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
-
-
-/****************************************** SOLUTION *************************************************************************************/
-
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
+false
+	
+	
+	
+/***************************************************** SOLUTION **************************************************************************/
+	
+	
+#include <cstring>
+bool isSubSequence(char str1[], char str2[], int m, int n){ 
     
-    if(a >='a' && a <='z'){
-        cout<<"0";
-    }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
-    }
-    else{
-        cout<<"-1";
-    }
+    if (m == 0) return true; 
+    if (n == 0) return false; 
+    
+    if (str1[m-1] == str2[n-1]) 
+        return isSubSequence(str1, str2, m-1, n-1); 
+  
+    return isSubSequence(str1, str2, m, n-1); 
+} 
+
+bool checksequenece(char large[] , char*small) {
+ int m = strlen(small);
+    int n = strlen(large);
+    bool ans = isSubSequence(small,large,m,n);
+    return ans;
 }
