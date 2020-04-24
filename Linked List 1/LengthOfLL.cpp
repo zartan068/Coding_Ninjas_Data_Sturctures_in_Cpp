@@ -1,45 +1,28 @@
-Check Case
+Length of LL
 Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
+Given a linked list, find and return the length of input LL. Do it iteratively.
 Input format :
-Single Character
+Linked list elements (separated by space and terminated by -1)
 Output format :
-1 or 0 or -1
-Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
-
-
-/****************************************** SOLUTION *************************************************************************************/
-
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
+Length of LL
+Sample Input :
+3 4 5 2 6 1 9 -1
+Sample Output :
+7
+	
+	
+/************************************************ SOLUTION ******************************************************************************/
+	
+	
+int length(Node *head) {
+   
+    int count = 0; // Initialize count  
+    Node* current = head; // Initialize current  
+    while (current != NULL)  
+    {  
+        count++;  
+        current = current->next;  
+    }  
+    return count;  
     
-    if(a >='a' && a <='z'){
-        cout<<"0";
-    }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
-    }
-    else{
-        cout<<"-1";
-    }
 }
