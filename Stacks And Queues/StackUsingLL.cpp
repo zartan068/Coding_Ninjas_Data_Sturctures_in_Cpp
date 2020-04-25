@@ -1,45 +1,72 @@
-Check Case
-Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
-Input format :
-Single Character
-Output format :
-1 or 0 or -1
-Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
-
-
-/****************************************** SOLUTION *************************************************************************************/
-
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
+Code : Stack Using LL
+You need to implement a Stack class using linked list.
+The data members should be private.
+Implement the following public functions :
+1. Constructor -
+Initialises the data member (i.e. head to null).
+2. push :
+This function should take one argument of type T and has return type void. This function should insert an element in the stack. Time complexity should be O(1).
+3. pop :
+This function takes no input arguments and has return type T. This should removes the last element which is entered and return that element as an answer. Time complexity should be O(1).
+4. top :
+This function takes no input arguments and has return type T. This should return the last element which is entered and return that element as an answer. Time complexity should be O(1).
+5. size :
+Return the size of stack i.e. count of elements which are present ins stack right now. Time complexity should be O(1).
+6. isEmpty :
+Checks if the stack is empty or not. Return true or false.
+	
+	
+/****************************************************** SOLUTION **********************************************************************/
+	
+	
+template <typename T>
+class Stack {
+    Node<T> *head;
+    int size;		// number of elements prsent in stack
     
-    if(a >='a' && a <='z'){
-        cout<<"0";
+    public :
+    
+    Stack() {
+        head = NULL;
+        size = 0;
     }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
+    
+    int getSize() {
+        return size;
     }
-    else{
-        cout<<"-1";
+    
+    bool isEmpty() {
+        return size == 0;
     }
-}
+    
+    void push(T element) {
+        Node<T> *newNode = new Node<T>(element);
+		newNode -> next = head;
+		head = newNode;
+		size++;
+        
+    }
+    
+    T pop() {
+        // Return 0 if stack is empty. Don't display any other message
+        if(isEmpty()) {
+			return 0;		
+		}
+        
+		T ans = head -> data;
+		Node<T> *temp = head; // to delete he popped data
+		head = head -> next;
+		delete temp;
+		size--;
+		return ans;
+    }
+    
+    T top() {
+        // Return 0 if stack is empty. Don't display any other message
+        if(isEmpty()){
+             return 0;   
+        }   
+        return head -> data;
+    }
+    
+};
