@@ -1,45 +1,50 @@
-Check Case
-Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
+Print Level Wise
+Given a generic tree, print the input tree in level wise order. ####For printing a node with data N, you need to follow the exact format -
+N:x1,x2,x3,...,xn
+wherer, N is data of any node present in the binary tree. x1, x2, x3, ...., xn are the children of node N
+There is no space in between.
+You need to print all nodes in the level order form in different lines.
 Input format :
-Single Character
-Output format :
-1 or 0 or -1
-Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
+Elements in level order form separated by space (as per done in class). Order is - 
+Root_data, n (No_Of_Child_Of_Root), n children, and so on for every element 
+Output Format :
+Level wise print
+Sample Input :
+10 3 20 30 40 2 40 50 0 0 0 0 
+Sample Output :
+10:20,30,40
+20:40,50
+30:
+40:
+40:
+50:
 
 
-/****************************************** SOLUTION *************************************************************************************/
+/*********************************************** SOLUTION ***************************************************************************/
 
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
-    
-    if(a >='a' && a <='z'){
-        cout<<"0";
-    }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
-    }
-    else{
-        cout<<"-1";
-    }
+
+#include<queue>
+void printLevelWise(TreeNode<int>* root) {
+    if (root == NULL) {
+		return;
+	}
+	queue <TreeNode<int>*> pendingQ;
+	pendingQ.push(root);
+	while(pendingQ.size() != 0){
+		TreeNode<int> *front = pendingQ.front();
+		cout << front -> data <<":";
+		pendingQ.pop();
+		for (int i = 0; i < root->children.size(); i++) {
+			pendingQ.push(root -> children[i]);
+			
+			if(root -> children.size() - 1 != i){
+				cout << root -> children[i] -> data << ",";
+			}
+			else{
+				cout << root -> children [i] -> data;
+			}	
+		}
+		root = pendingQ.front();
+		cout << endl;
+	}
 }
