@@ -1,45 +1,30 @@
-Check Case
-Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
-Input format :
-Single Character
-Output format :
-1 or 0 or -1
-Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
+Code: Search in BST
+Given a BST and an integer k. Find if the integer k is present in given BST or not. Return the node with data k if it is present, return null otherwise.
+Assume that BST contains all unique elements.
+Sample Input :
+8 5 10 2 6 -1 -1 -1 -1 -1 7 -1 -1
+6 10
+Sample Output :
+6 7 8 10
+	
+	
+/************************************************************ SOLUTION ******************************************************************/
+	
 
-
-/****************************************** SOLUTION *************************************************************************************/
-
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
-    
-    if(a >='a' && a <='z'){
-        cout<<"0";
+SOLUTION:
+BinaryTreeNode<int>* searchInBST(BinaryTreeNode<int> *root , int k){
+    if(root == NULL){
+        return NULL;
     }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
+    
+    if(root -> data == k){
+        return root;
+    }
+    
+    if(root -> data > k){
+        return searchInBST(root -> left, k);
     }
     else{
-        cout<<"-1";
+        return searchInBST(root -> right, k);
     }
 }
