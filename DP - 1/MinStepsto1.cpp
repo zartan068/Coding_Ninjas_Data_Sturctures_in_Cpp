@@ -1,45 +1,61 @@
-Check Case
+Code : Min Steps to 1
 Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
+Given a positive integer n, find the minimum number of steps s, that takes n to 1. You can perform any one of the following 3 steps.
+1.) Subtract 1 from it. (n= n - ­1) ,
+2.) If its divisible by 2, divide by 2.( if n%2==0, then n= n/2 ) ,
+3.) If its divisible by 3, divide by 3. (if n%3 == 0, then n = n / 3 ).  
+Just write brute-force recursive solution for this.
 Input format :
-Single Character
+Line 1 : A single integer i.e. n
 Output format :
-1 or 0 or -1
+Line 1 : Single integer i.e number of steps
 Constraints :
-Input can be any character
+1 <= n <= 500
 Sample Input 1 :
-v
+4
 Sample Output 1 :
-0
+2 
+Sample Output 1 Explanation :
+For n = 4
+Step 1 : n = 4/2 = 2
+Step 2 : n = 2/2 = 1
 Sample Input 2 :
-V
+7
 Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
-
-
-/****************************************** SOLUTION *************************************************************************************/
-
-#include<iostream>
+3
+Sample Output 2 Explanation :
+For n = 7
+Step 1 : n = 7 ­ - 1 = 6
+Step 2 : n = 6 / 3 = 2
+Step 3 : n = 2 / 2 = 1
+	
+	
+/******************************************************* SOLUTION ************************************************************************/
+	
+	
+#include <iostream>
+#include<climits>
 using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
-    
-    if(a >='a' && a <='z'){
-        cout<<"0";
-    }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
-    }
-    else{
-        cout<<"-1";
-    }
+int countStepsTo1(int n){
+    // Base case
+	if(n <= 1) {
+		return 0;
+	}
+
+	// Recursive call
+	int x = countStepsTo1(n - 1);
+
+	int y = INT_MAX, z = INT_MAX;
+	if(n % 2 == 0) {
+		y = countStepsTo1(n/2);
+	}
+
+	if(n % 3 == 0) {
+		z = countStepsTo1(n/3);
+	}
+
+	// Calculate final output
+	int ans = min(x, min(y, z)) + 1;
+
+	return ans;
 }
