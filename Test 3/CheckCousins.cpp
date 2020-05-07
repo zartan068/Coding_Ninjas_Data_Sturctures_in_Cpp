@@ -1,45 +1,69 @@
-Check Case
+Check cousins
 Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
+Given the binary Tree and two nodes say ‘p’ and ‘q’. Determine whether the two nodes are cousins of each other or not. Two nodes are said to be cousins of each other if they are at same level of the Binary Tree and have different parents.
+Do it in O(n).
 Input format :
-Single Character
+Line 1 : Nodes in level order form (separated by space). If any node does not have left or right child, take -1 in its place
+Line 2 : integer value of p 
+Line 3 : Integer value of q
 Output format :
-1 or 0 or -1
+true or false
 Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
-
-
-/****************************************** SOLUTION *************************************************************************************/
-
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
-    
-    if(a >='a' && a <='z'){
-        cout<<"0";
-    }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
-    }
+1 <= N <= 10^5
+Sample Input :
+5 6 10 2 3 4 -1 -1 -1 -1 9 -1 -1 -1 -1
+2
+4
+Sample Output :
+true
+	
+	
+/******************************************************* SOLUTION ************************************************************************/
+	
+	
+int depth(BinaryTreeNode<int> *root,int node)
+{
+    if(root==NULL)
+        return -1;
+    if(node==root->data)
+        return 0;
+    int left=depth(root->left,node);
+    if(left!=-1)
+        return 1+left;
     else{
-        cout<<"-1";
+           int right=depth(root->right,node);
+if(right!=-1)
+    return 1+right;
+        else 
+            return -1;
+ 
     }
+}
+bool isSibling(BinaryTreeNode<int> *root, int p, int q) {
+    // Write your code here
+if(root==NULL)
+    return false;
+    if(root->left!=NULL&&root->right!=NULL)
+    {
+        if(root->left->data==p&&root->right->data==q)
+            return true;
+         else if(root->left->data==q&&root->right->data==p)
+            return true;
+        else
+            return isSibling(root->left,p,q)||isSibling(root->right,p,q);
+        
+    }
+    if(root->right!=NULL)
+    {
+        return isSibling(root->right,p,q);
+    }
+    else
+        return isSibling(root->left,p,q);
+}
+bool isCousin(BinaryTreeNode<int> *root, int p, int q)
+{
+    if(root==NULL)
+        return false;
+    return ((depth(root,p)==depth(root,q))&&(!isSibling(root,p,q)));
+    
 }
