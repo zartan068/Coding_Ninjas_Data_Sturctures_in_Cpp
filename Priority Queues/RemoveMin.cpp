@@ -1,45 +1,94 @@
-Check Case
-Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
-Input format :
-Single Character
-Output format :
-1 or 0 or -1
-Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
+Code : Remove Min
+Implement the function RemoveMin for the min priority queue class.
+For a minimum priority queue, write the function for removing the minimum element present. Remove and return the minimum element.
+Note : main function is given for your reference which we are using internally to test the code.
+	
+	
+/************************************************ SOLUTION **************************************************************************/
+	
+	
+#include <vector>
+class PriorityQueue {
+	vector<int> pq;
 
+	public :
 
-/****************************************** SOLUTION *************************************************************************************/
+	PriorityQueue() {
 
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
-    
-    if(a >='a' && a <='z'){
-        cout<<"0";
-    }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
-    }
-    else{
-        cout<<"-1";
-    }
-}
+	}
+
+	bool isEmpty() {
+		return pq.size() == 0;
+	}
+
+	// Return the size of priorityQueue - no of elements present
+	int getSize() {
+		return pq.size();
+	}
+
+	int getMin() {
+		if(isEmpty()) {
+			return 0;		// Priority Queue is empty
+		}
+		return pq[0];
+	}
+
+	void insert(int element) {
+		pq.push_back(element);
+		
+		int childIndex = pq.size() - 1;
+
+		while(childIndex > 0) {
+			int parentIndex = (childIndex - 1) / 2;
+
+			if(pq[childIndex] < pq[parentIndex]) {
+				int temp = pq[childIndex];
+				pq[childIndex] = pq[parentIndex];
+				pq[parentIndex] = temp;
+			}
+			else {
+				break;
+			}
+			childIndex = parentIndex;
+		}
+
+	}
+
+	int removeMin() {
+		if(isEmpty()) {
+			return 0;		// Priority Queue is empty
+		}
+		
+        int ans = pq[0];
+		pq[0] = pq[pq.size() - 1];
+		pq.pop_back();
+
+		// down-heapify
+
+		int parentIndex = 0;
+		int leftChildIndex = 2 * parentIndex + 1;
+		int rightChildIndx = 2 * parentIndex + 2;
+	
+		while(leftChildIndex < pq.size()) {
+			int minIndex = parentIndex;
+			if(pq[minIndex] > pq[leftChildIndex]) {
+				minIndex = leftChildIndex;
+			}
+			if(rightChildIndx < pq.size() && pq[rightChildIndx] < pq[minIndex]) {
+				minIndex = rightChildIndx;
+			}
+			if(minIndex == parentIndex) {
+				break;
+			}
+			int temp = pq[minIndex];
+			pq[minIndex] = pq[parentIndex];
+			pq[parentIndex] = temp;
+		
+			parentIndex = minIndex;
+			leftChildIndex = 2 * parentIndex + 1;
+			rightChildIndx = 2 * parentIndex + 2;
+		}
+
+		return ans;
+	}
+};
