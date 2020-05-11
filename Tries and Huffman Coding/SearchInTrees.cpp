@@ -1,45 +1,99 @@
-Check Case
-Send Feedback
-Write a program that takes a character as input and prints either 1, 0 or -1 according to the following rules.
-1, if the character is an uppercase alphabet (A - Z)
-0, if the character is a lowercase alphabet (a - z)
--1, if the character is not an alphabet
-Input format :
-Single Character
-Output format :
-1 or 0 or -1
-Constraints :
-Input can be any character
-Sample Input 1 :
-v
-Sample Output 1 :
-0
-Sample Input 2 :
-V
-Sample Output 2 :
-1
-Sample Input 3 :
-#
-Sample Output 3 :
--1
+Code : Search in Tries
+Implement the function SearchWord for the Trie class.
+For a trie, write the function for searching a word. Return true if found successfully otherwise return false.
+Note : main function is given for your reference which we are using internally to test the code.
 
+	
+/*************************************************************** SOLUTION **********************************************************/
+	
+	
+#include <string>
+#include <vector>
+class TrieNode {
+	public :
+	char data;
+	TrieNode **children;
+	bool isTerminal;
 
-/****************************************** SOLUTION *************************************************************************************/
+	TrieNode(char data) {
+		this -> data = data;
+		children = new TrieNode*[26];
+		for(int i = 0; i < 26; i++) {
+			children[i] = NULL;
+		}
+		isTerminal = true;          /////all node should be true becaz patter should be present middle in the string
+	}
+};
+/*      ////////////////check for it///////////
+6
+the moon shines brightly at night
+ig
+*/
 
-#include<iostream>
-using namespace std;
-int main() {
-	// Write your code here
-	char a;
-    cin>> a;
-    
-    if(a >='a' && a <='z'){
-        cout<<"0";
+class Trie {
+	TrieNode *root;
+
+	public :
+	int count;
+
+	Trie() {
+		this->count = 0;
+		root = new TrieNode('\0');
+	}
+
+	bool insertWord(TrieNode *root, string word) {
+		// Base case
+		if(word.size() == 0) {
+			/*if (!root->isTerminal) {
+				root -> isTerminal = true;
+				return true;	
+			} else {
+				return false;
+			}*/
+            return true;
+		}
+
+		// Small Calculation
+		int index = word[0] - 'a';
+		TrieNode *child;
+		if(root -> children[index] != NULL) {
+			child = root -> children[index];
+		}
+		else {
+			child = new TrieNode(word[0]);
+			root -> children[index] = child;
+		}
+
+		// Recursive call
+		return insertWord(child, word.substr(1));
+	}
+
+	// For user
+	void insertWord(string word) {
+		if (insertWord(root, word)) {
+			this->count++;
+		}
+	}
+    bool search(TrieNode *root,string word)
+    {
+        if(word.size()==0 && root->isTerminal==true)
+            return true;
+        else if(word.size()==0 && root->isTerminal!=true)
+            return false;
+        
+        int index=word[0]-'a';
+        
+        if(root->children[index]!=NULL)
+            return search(root->children[index],word.substr(1));
+        else
+            return false;
+        
+            
     }
-    else if(a >= 'A' && a <= 'Z'){
-        cout<<"1";
+    bool search(string word) {
+        // Write your code here
+        return search(root,word);
+        
     }
-    else{
-        cout<<"-1";
-    }
-}
+
+};
