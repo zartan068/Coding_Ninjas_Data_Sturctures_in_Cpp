@@ -26,122 +26,120 @@ Sample Output 2 Expalanation :
 /*************************************************************** SOLUTION **********************************************************/
 
 
-#include <string>
-#include <vector> 
+#include<bits/stdc++.h>
+using namespace std;
 class TrieNode {
-	public :
-	char data;
-	TrieNode **children;
-	bool isTerminal;
-	int childCount;
-
-	TrieNode(char data) {
-		this -> data = data;
-		children = new TrieNode*[26];
-		for(int i = 0; i < 26; i++) {
-			children[i] = NULL;
-		}
-		isTerminal = false;
-		childCount = 0;
-	}
-};
-
-class Trie {
-	TrieNode *root;
-
-	public :
-	int count;
-
-	Trie() {
-		this->count = 0;
-		root = new TrieNode('\0');
-	}
-
-	bool insertWord(TrieNode *root, string word) {
-		// Base case
-		if(word.size() == 0) {
-			if (!root->isTerminal) {
-				root -> isTerminal = true;
-				return true;	
-			} else {
-				return false;
-			}
-		}
-
-		// Small Calculation
-		int index = word[0] - 'a';
-		TrieNode *child;
-		if(root -> children[index] != NULL) {
-			child = root -> children[index];
-		}
-		else {
-			child = new TrieNode(word[0]);
-			root -> children[index] = child;
-			root->childCount++;
-		}
-
-		// Recursive call
-		return insertWord(child, word.substr(1));
-	}
-
-	// For user
-	void insertWord(string word) {
-		if (insertWord(root, word)) {
-			this->count++;
-		}
-	}
-    
-    bool search(TrieNode *root,string word)
-    {
-        if(word.size()==0 && root->isTerminal==true)
-            return true;
-        else if(word.size()==0 && root->isTerminal!=true)
-            return false;
-        
-        int index=word[0]-'a';
-        
-        if(root->children[index]!=NULL)
-            return search(root->children[index],word.substr(1));
-        else
-            return false;
-        
-            
-    }
-    bool search(string word) {
-        // Write your code here
-        return search(root,word);
-        
-    }
-    string reverse(string word)
-    {
-        int length=word.size();
-        for(int i=0;i<=length/2;i++)
-        {
-            char temp=word[i];
-            word[i]=word[length-i-1];
-            word[length-i-1]=temp;
+    public : char data;
+    TrieNode **children;
+    bool isTerminal;
+    int childCount;
+    TrieNode(char data) {
+        this -> data = data;
+        children = new TrieNode*[26];
+        for(int i = 0; i < 26; i++) {
+            children[i] = NULL;
         }
-        return word;
+        isTerminal = false;
+        childCount = 0;
     }
-  
-
-	
-
-	bool findIfPalindromePair(vector<string> arr) {
-		// Complete this function
-		// Return true or false.
-        
-       for(int i=0;i<arr.size();i++)
-           insertWord(arr[i]);
-       for(int i=0;i<arr.size();i++)
-       {
-           string word=reverse(arr[i]);
-           if(search(word))
-               return true;
-           else if(search(word.substr(1)))
-               return true;
-       }
+};
+class Trie {
+    TrieNode *root;
+    public : int count;
+    Trie() { 
+        this->count = 0;
+        root = new TrieNode('\0');
+    }
+    bool insertWord(TrieNode *root, string word) {
+        // Base case 
+        if(word.size() == 0) {
+            if (!root->isTerminal) {
+                root -> isTerminal = true;
+                return true;
+            }
+            else { 
+                return false;
+            }
+        }
+        // Small Calculation 
+        int index = word[0] - 'a'; 
+        TrieNode *child;
+        if(root -> children[index] != NULL) {
+            child = root -> children[index]; 
+        }
+        else { 
+            child = new TrieNode(word[0]);
+            root -> children[index] = child;
+            root->childCount++; 
+        }
+        // Recursive call 
+        return insertWord(child, word.substr(1));
+    }
+    // For user 
+    void insertWord(string word) {
+        if (insertWord(root, word)) {
+            this->count++;
+        }
+    }
+    pair<bool,int> search(TrieNode* root,string word) {
+        // Write your code here
+        if(word.size()==0){ 
+            if(root->isTerminal){ 
+                pair<bool,int> ret;
+                ret.first = true;
+                ret.second = 0;
+                return ret;
+            }
+            else{
+                pair<bool,int> ret;
+                ret.first = false;
+                ret.second = 0;
+                return ret;
+            }
+        }
+        int index = word[0] - 'a';
+        if(root->children[index]==NULL){
+            pair<bool,int> ret;
+            ret.first = false; 
+            ret.second = word.size();
+            return ret;
+        }
+        else{
+            return search(root->children[index],word.substr(1)); 
+        }
+    }
+    pair<bool,int> search(string word){ 
+        return search(root,word); 
+    }
+    bool findIfPalindromePair(vector<string> arr) {
+        // Complete this function 
+        // Return true or false. 
+        for(int i=0;i<arr.size();++i){
+            string tmp = arr[i];
+            reverse(tmp.begin(),tmp.end());
+            if(tmp==arr[i])
+                return true;
+            insertWord(tmp);
+        }
+        for(int i=0;i<arr.size();++i){ 
+            pair<bool,int> tmp = search(arr[i]);
+            if(tmp.first)
+                return true;
+            else{
+                int j = arr[i].length()-1;
+                int count = 0;
+                string hold; 
+                while(count<tmp.second){
+                    hold += arr[i][j];
+                    --j;
+                    ++count;
+                } 
+                string buck = hold;
+                reverse(hold.begin(),hold.end());
+                if(buck==hold) 
+                    return true;
+            } 
+        } 
         return false;
-	 }
-    
+    }
 };
