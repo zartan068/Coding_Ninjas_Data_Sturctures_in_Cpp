@@ -26,120 +26,162 @@ Sample Output 2 Expalanation :
 /*************************************************************** SOLUTION **********************************************************/
 
 
-#include<bits/stdc++.h>
-using namespace std;
-class TrieNode {
-    public : char data;
+#include <string>
+#include <vector>
+
+class TrieNode
+{
+public:
+    char data;
     TrieNode **children;
     bool isTerminal;
     int childCount;
-    TrieNode(char data) {
-        this -> data = data;
-        children = new TrieNode*[26];
-        for(int i = 0; i < 26; i++) {
+
+    TrieNode(char data)
+    {
+        this->data = data;
+        children = new TrieNode *[26];
+        for (int i = 0; i < 26; i++)
+        {
             children[i] = NULL;
         }
         isTerminal = false;
         childCount = 0;
     }
 };
-class Trie {
+
+class Trie
+{
     TrieNode *root;
-    public : int count;
-    Trie() { 
+
+public:
+    int count;
+
+    Trie()
+    {
         this->count = 0;
         root = new TrieNode('\0');
     }
-    bool insertWord(TrieNode *root, string word) {
-        // Base case 
-        if(word.size() == 0) {
-            if (!root->isTerminal) {
-                root -> isTerminal = true;
+
+    bool add(TrieNode *root, string word)
+    {
+        // Base case
+        if (word.size() == 0)
+        {
+            if (!root->isTerminal)
+            {
+                root->isTerminal = true;
                 return true;
             }
-            else { 
+            else
+            {
                 return false;
             }
         }
-        // Small Calculation 
-        int index = word[0] - 'a'; 
+
+        // Small Calculation
+        int index = word[0] - 'a';
         TrieNode *child;
-        if(root -> children[index] != NULL) {
-            child = root -> children[index]; 
+        if (root->children[index] != NULL)
+        {
+            child = root->children[index];
         }
-        else { 
+        else
+        {
             child = new TrieNode(word[0]);
-            root -> children[index] = child;
-            root->childCount++; 
+            root->children[index] = child;
+            root->childCount++;
         }
-        // Recursive call 
-        return insertWord(child, word.substr(1));
+
+        // Recursive call
+        return add(child, word.substr(1));
     }
-    // For user 
-    void insertWord(string word) {
-        if (insertWord(root, word)) {
+
+    // For user
+    void add(string word)
+    {
+        if (add(root, word))
+        {
             this->count++;
         }
     }
-    pair<bool,int> search(TrieNode* root,string word) {
-        // Write your code here
-        if(word.size()==0){ 
-            if(root->isTerminal){ 
-                pair<bool,int> ret;
-                ret.first = true;
-                ret.second = 0;
-                return ret;
-            }
-            else{
-                pair<bool,int> ret;
-                ret.first = false;
-                ret.second = 0;
-                return ret;
-            }
+
+    /*..................... Palindrome Pair................... */
+    
+     //For string reverse
+    string reverseWord(string word){
+        string reverse="";
+        for(int i=word.size()-1;i>=0;i--){
+            reverse=reverse+word[i];
         }
-        int index = word[0] - 'a';
-        if(root->children[index]==NULL){
-            pair<bool,int> ret;
-            ret.first = false; 
-            ret.second = word.size();
-            return ret;
-        }
-        else{
-            return search(root->children[index],word.substr(1)); 
-        }
+        return reverse;
     }
-    pair<bool,int> search(string word){ 
-        return search(root,word); 
-    }
-    bool findIfPalindromePair(vector<string> arr) {
-        // Complete this function 
-        // Return true or false. 
-        for(int i=0;i<arr.size();++i){
-            string tmp = arr[i];
-            reverse(tmp.begin(),tmp.end());
-            if(tmp==arr[i])
-                return true;
-            insertWord(tmp);
+    
+    bool isPalindromePair(vector<string> words)
+    {
+        if(words.size()==0)
+            return false;
+        for(int i=0;i<words.size();i++){
+            this->add(reverseWord(words[i]));
         }
-        for(int i=0;i<arr.size();++i){ 
-            pair<bool,int> tmp = search(arr[i]);
-            if(tmp.first)
+        return isPalindromePair(this->root,words);
+    }
+   
+    bool isPalindromePair(TrieNode*root,vector<string>words){
+        if(words.size()==0 || root==NULL)
+            return false;
+        for(int i=0;i<words.size();i++){
+            if(doesPairExistFor(root,words[i],0)){
                 return true;
-            else{
-                int j = arr[i].length()-1;
-                int count = 0;
-                string hold; 
-                while(count<tmp.second){
-                    hold += arr[i][j];
-                    --j;
-                    ++count;
-                } 
-                string buck = hold;
-                reverse(hold.begin(),hold.end());
-                if(buck==hold) 
-                    return true;
-            } 
-        } 
+            }
+        }
         return false;
+    }
+    
+    bool doesPairExistFor(TrieNode*root,string word,int startIndex){
+        if(word.length()==0)
+            return true;
+        if(startIndex==word.length()){
+            if(root->isTerminal)
+                return true;
+            return checkRemainingBranchesInTrie(root,"");
+        }
+        int charIndex=word[startIndex]-'a';
+        TrieNode *child=root->children[charIndex];
+        if(child==NULL){
+            if(root->isTerminal){
+                return checkWordForPalindrome(word.substr(startIndex));
+            }
+            return false;
+        }
+        return doesPairExistFor(child,word,startIndex+1);
+    }
+    
+    bool checkRemainingBranchesInTrie(TrieNode* root,string word){
+        if(root->isTerminal){
+            if(checkWordForPalindrome(word))
+                return true;
+        }
+        for(int i=0;i<26;i++){
+            TrieNode *child=root->children[i];
+            if(child==NULL){
+                continue;
+            }
+            string fwd=word+child->data;
+                if(checkRemainingBranchesInTrie(child,fwd))
+                    return true;
+        }
+      return false;  
+    }
+    bool checkWordForPalindrome(string word){
+       int startIndex=0;
+       int endIndex=word.length()-1;
+        while(startIndex < endIndex){
+            if(word[startIndex]!=word[endIndex])
+                return false;
+            startIndex+=1;
+            endIndex-=1;
+        }
+        return true; 
     }
 };
