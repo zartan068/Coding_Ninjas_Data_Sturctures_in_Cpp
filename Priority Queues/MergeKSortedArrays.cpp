@@ -22,6 +22,30 @@ Sample Output 1 :
 
 
 /************************************************ SOLUTION **************************************************************************/
+    
+//Better time complexity
+#include<queue>
+#include<utility>
+#include<queue>
+vector<int> mergeKSortedArrays(vector<vector<int>*> input){
+    priority_queue<pair<int,pair<int,int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>> > pq;
+    int size=input.size();
+    for(int i=0;i<size;i++){
+        pq.push({input[i]->at(0),{i,0}});
+    }
+    vector<int> ans;
+  while(!pq.empty()){
+      pair<int,pair<int,int>> current=pq.top();
+      pq.pop();
+      int i=current.second.first;
+      int k=current.second.second;
+      ans.push_back(current.first);
+      if(k+1<input[i]->size()){
+          pq.push({input[i]->at(k+1),{i,k+1}});
+      }
+  }
+    return ans;
+}
 
 
 #include<queue>
