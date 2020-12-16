@@ -21,10 +21,25 @@ Sample Output :
 
 
 /*************************************************************** SOLUTION ****************************************************************/
+    
+ #include <unordered_map>
 
+int pairSum(int *arr, int n) {
+    int cnt = 0;
+  unordered_map<int,int> ourmap;
+    for (int i = 0; i < n; i++)
+    {
+    	int complement = -arr[i];
+        if(ourmap.find(complement) != ourmap.end()){
+            cnt += ourmap[complement];
+        }
+        
+       ourmap[arr[i]]++;
+    } 	
+    return cnt;
+}
 
-
-#include<unordered_map>
+/*#include<unordered_map>
 void PairSum(int *input, int n) {        
     unordered_map<int,int> ourmap;
     for (int i = 0; i < n; i++)
