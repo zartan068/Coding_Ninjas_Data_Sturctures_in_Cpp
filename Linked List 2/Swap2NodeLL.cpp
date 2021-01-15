@@ -28,6 +28,10 @@ node* swap_nodes(node *head,int i,int j) {
     node *temp = head, *prev = NULL; 
     node *node1 = NULL, *node2 = NULL, *node1_prev = NULL, *node2_prev = NULL;
     int pos = 0;
+    
+    // if i and j are equal
+    if(i == j) return head; //No changes
+    
     while(temp != NULL) {
         if(pos == i) {
             node1_prev = prev; 
