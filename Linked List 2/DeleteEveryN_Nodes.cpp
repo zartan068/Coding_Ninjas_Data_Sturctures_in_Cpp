@@ -24,6 +24,35 @@ Sample Output 2 :
 
 
 /********************************************************** SOLUTION ****************************************************************/
+Node *skipMdeleteN(Node *head, int M, int N)
+{
+	if(!head || N == 0) return head;
+    else if(M == 0) return NULL;
+    
+    Node* curr = head;
+    
+    while(curr){
+    
+        for(int i=0; i<M-1 && curr; i++){
+            curr = curr->next;
+        }
+
+        Node * temp = NULL;
+        if(curr) temp = curr->next;
+
+        for(int i=0; i<N && temp; i++){
+            temp = temp->next;
+        }
+
+        if(curr) {
+            curr->next = temp;
+            curr = curr->next;
+        }
+    }
+    
+    return head;
+}
+
 
 
 node* skipMdeleteN(node  *head, int M, int N) {

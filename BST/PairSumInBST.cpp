@@ -21,8 +21,55 @@ Sample Output
 
 
 /************************************************************ SOLUTION ******************************************************************/
+//using stacks
+#include <stack>
+void printNodesSumToS(BinaryTreeNode<int> *root, int s) 
+{
+    if(root==NULL)
+        return;
+    
+    stack<BinaryTreeNode<int>*> s1, s2;
+    BinaryTreeNode<int>* p = root;
+    BinaryTreeNode<int>* q = root;
+    
+    while(!s1.empty() || !s2.empty() || p || q){
+        if(p || q){
+            if(p){
+                s1.push(p);
+                p = p->left;
+            }
+            if(q){
+                s2.push(q);
+                q = q->right;
+            }
+        }
+        else{
+            int a = s1.top()->data;
+            int b = s2.top()->data;
+            
+            if(s1.top() == s2.top()) break;
+            
+            if(a + b == s){
+                cout<<min(a, b)<<' '<<max(a, b)<<endl;
+            }
+            
+            if(a + b > s){
+                q = s2.top();
+                s2.pop();
+                q = q->left;
+            }
+            else{
+                p = s1.top();
+                s1.pop();
+                p = p->right;
+            }
+        }
+    }
+    
+    // Write your code here
+}
 
-
+//Using inorder traversal
 #include<bits/stdc++.h>
 void helper(BinaryTreeNode<int> *root, vector<int> &arr){
 	if(root == NULL){
@@ -63,38 +110,4 @@ void printNodesSumToS(BinaryTreeNode<int> *root, int s) {
 
 
 
-/*
-#include<bits/stdc++.h>
-void helper(BinaryTreeNode<int>* root, vector<int>& arr){
-    if(root == NULL)
-        return;
-    
-    arr.push_back(root->data);
-    
-    helper(root->left, arr);
-    helper(root->right, arr);
-}
-void printNodesSumToS(BinaryTreeNode<int> *root, int sum) {
-   
-    vector<int> output;
-    
-    helper(root, output);   //convert BTN to vector
-    
-    sort(output.begin(), output.end());
-    
-    int i = 0;
-    int j = output.size() - 1;
-    
-    while(i<j){
-        if(output[i] + output[j] > sum)
-            j--;
-        else if(output[i] + output[j] < sum)
-            i++;
-        else{
-            cout<<output[i]<<" "<<output[j]<<endl;
-            i++;
-            j--;
-        }
-    }
-}
-*/
+
