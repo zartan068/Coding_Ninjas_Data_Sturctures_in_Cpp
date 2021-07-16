@@ -16,3 +16,5 @@ Fork this repo or download this, add the codes and the questions to C++ files th
 
 ### Refer the the link below to get upto Rs.1000 discount on Coding Ninjas Courses
 https://classroom.codingninjas.com/app/invite/CHVYN
+
+# Link to the Competitive Programming Course(Batch:August 01, 2020): https://github.com/ashhar001/Coding-Ninjas-Competitive-Programming
