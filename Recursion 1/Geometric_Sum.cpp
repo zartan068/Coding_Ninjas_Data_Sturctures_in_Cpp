@@ -13,9 +13,8 @@ Sample Output :
 
 double geometricSum(int k) {
     // Write your code here
-   if(k==0)
-		{
-			return 1;
-		}
+	if(k==0){
+	   return 1;
+   }
 	return 1+ 0.5*(geometricSum(k-1));
 }
